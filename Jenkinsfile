@@ -20,7 +20,7 @@ pipeline {
     }
     post {
         success {
-            mail to: amalv@qburst.com, subject: 'Succesfully deployed'
+            echo 'Succesfully deployed'
         }
     }
 }
