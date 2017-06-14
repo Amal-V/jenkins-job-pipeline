@@ -1,5 +1,6 @@
 node {
     stage('Build') {
+        ls
         echo 'Building....'
     }
     stage('Test') {
