@@ -5,11 +5,11 @@ node {
     }
     stage('Build') {
         echo 'Building....'
-        sh 'docker build -t mynginx .'
+        sh "docker build -t global-router ."
     }
     stage('Clone 2nd Repo ') {
         echo 'Branch Checkout....'
-        git branch: 'alex/host_fix', credentialsId: 'amal-v', url: 'https://github.com/fastretailing/rewrite_unit_test.git'
+        git branch: 'amal/dev', credentialsId: 'amal-v', url: 'https://github.com/fastretailing/rewrite_unit_test.git'
     }
     
     stage('Test') {
@@ -20,5 +20,6 @@ node {
     stage('Deploy') {
         echo 'Deploying....'
         sh 'docker-compose up -d'
+        echo 'Deploy Success....'
     }
 }
