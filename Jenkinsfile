@@ -1,11 +1,12 @@
 node {
+    def image_name="global-router"
     stage('Checkout') {
         echo 'Branch checkout....'
         git branch: 'master', url: 'https://github.com/Amal-V/jenkins-job-pipeline.git'
     }
     stage('Build') {
         echo 'Building....'
-        sh "docker build -t global-router ."
+        sh "docker build -t ${image_name} ."
     }
     stage('Clone 2nd Repo ') {
         echo 'Branch Checkout....'
@@ -14,12 +15,13 @@ node {
     
     stage('Test') {
         echo 'Testing....'
-        sh 'sudo docker images'
-        sh 'sudo docker ps -a'
+        sh 'docker images'
     }
     stage('Deploy') {
         echo 'Deploying....'
-        sh 'docker-compose up -d'
+        sh "export NGINX_IMAGE=${image_name} && docker-compose up -d"
+        sh 'curl http://localhost:7000/run-test >report.html'
+        sh "docker-compose stop && docker-compose rm -f"
         echo 'Deploy Success....'
     }
 }
