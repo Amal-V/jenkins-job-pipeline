@@ -1,5 +1,7 @@
 node {
     def image_name="global-router"
+    def test_file_loc='./test_server/test-urls.yml'
+
     stage('Checkout') {
         echo 'Branch checkout....'
         git branch: 'master', url: 'https://github.com/Amal-V/jenkins-job-pipeline.git'
@@ -19,9 +21,9 @@ node {
     }
     stage('Deploy') {
         echo 'Deploying....'
-        sh "export NGINX_IMAGE=${image_name} && docker-compose up --build --force-recreate -d"
-        sh 'curl http://localhost:7000/run-test > report.xml'
-        sh "export NGINX_IMAGE=${image_name} && docker-compose stop && docker-compose rm -f"
+        sh "export TESTCASES_FILE_PATH=${test_file_loc} && export NGINX_IMAGE=${image_name} && docker-compose up --build --force-recreate -d"
+        sh 'curl http://localhost:6582/run-test > report.xml'
+        sh "export TESTCASES_FILE_PATH=${test_file_loc} && export NGINX_IMAGE=${image_name} && docker-compose stop && docker-compose rm -f"
         echo 'Deploy Success....'
         junit 'report.xml'
     }
