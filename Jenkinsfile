@@ -21,7 +21,7 @@ node {
         echo 'Deploying....'
         sh "export NGINX_IMAGE=${image_name} && docker-compose up --build --force-recreate -d"
         sh 'curl http://localhost:7000/run-test >report.xml'
-        sh "docker-compose stop && docker-compose rm -f"
+        sh "export NGINX_IMAGE=${image_name} && docker-compose stop && docker-compose rm -f"
         echo 'Deploy Success....'
     }
 }
